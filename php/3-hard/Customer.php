@@ -23,51 +23,70 @@ class Customer
         return $this->name;
     }
 
-    public function statement(): string {
+    public function statement(): string 
+    {
         $totalAmount = 0.0;
         $frequentRenterPoints = 0;
         $result = "Rental Record for " . $this->getName() . "\n";
 
-        foreach ($this->rentals as $each){
-           $thisAmount = 0.0;
+        foreach ($this->rentals as $rental) {
+            $thisAmount = $this->RentalAmount($rental);
+            $frequentRenterPoints += $this->RenterPoints($rental);
 
-           /* @var $each Rental */
-           // determines the amount for each line
-           switch($each->getMovie()->getPriceCode()) {
-               case Movie::REGULAR:
-                   $thisAmount += 2;
-                   if($each->getDaysRented() > 2)
-                       $thisAmount += ($each->getDaysRented() - 2) * 1.5;
-                   break;
-               case Movie::NEW_RELEASE:
-                   $thisAmount += $each->getDaysRented() * 3;
-                   break;
-               case Movie::CHILDREN:
-                   $thisAmount += 1.5;
-                   if($each->getDaysRented() > 3) {
-                       $thisAmount += ($each->getDaysRented() - 3) * 1.5;
-                   }
-                   break;
-           }
-
-           $frequentRenterPoints++;
-
-           if($each->getMovie()->getPriceCode() == Movie::NEW_RELEASE
-                && $each->getDaysRented() > 1)
-               $frequentRenterPoints++;
-
-            $result .= "\t" . $each->getMovie()->getTitle() . "\t"
+            $result .= "\t" . $rental->getMovie()->getTitle() . "\t"
                 . number_format($thisAmount, 1) . "\n";
             $totalAmount += $thisAmount;
-
         }
 
-        $result .= "You owed " . number_format($totalAmount, 1)  . "\n";
+        $result .= "You owed " . number_format($totalAmount, 1) . "\n";
         $result .= "You earned " . $frequentRenterPoints . " frequent renter points\n";
 
         return $result;
     }
 
+    private function RentalAmount(Rental $rental): float
+    {
+        $amount = 0.0;
+        
+        switch ($rental->getMovie()->getPriceCode()) {
+            case Movie::REGULAR:
+                $amount += 2;
+                if ($rental->getDaysRented() > 2) {
+                    $amount += ($rental->getDaysRented() - 2) * 1.5;
+                }
+                break;
+            case Movie::NEW_RELEASE:
+                $amount += $rental->getDaysRented() * 3;
+                break;
+            case Movie::CHILDREN:
+                $amount += 1.5;
+                if ($rental->getDaysRented() > 3) {
+                    $amount += ($rental->getDaysRented() - 3) * 1.5;
+                }
+                break;
+        }
+
+        return $amount;
+    }
+
+    private function RenterPoints(Rental $rental): int
+    {
+        $RenterPoints = 1;
+
+        if ($rental->getMovie()->getPriceCode() === Movie::NEW_RELEASE
+            && $rental->getDaysRented() > 1) {
+            $RenterPoints++;
+        }
+
+        return $RenterPoints;
+    }
+    
     private string $name;
     private array $rentals = [];
 }
+
+/*
+Pour réduire la complexité de la fonction, j'ai déplacé la logique de calcul du montant de la location dans la fonction RentalAmount.
+J'ai également déplacé la logique de calcul des points de fidélité du locataire dans la fonction RenterPoints. 
+Cela améliore la lisibilité et facilite la maintenance du code. Modification de noms de variable pour une meilleure compréhension.
+*/

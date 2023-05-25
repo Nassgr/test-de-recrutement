@@ -17,11 +17,11 @@ function convertSize($bytes, $precision = 2) {
   return round($value, $precision) . ' ' . $units[$index];
 }
 
-/* Les unités sont constantes donc on peut les rajouter en haut elle ne changerons jamais.
+/* Les unités sont constantes donc on peut les rajouter en haut elle ne changeront jamais.
 
 Ensuite une boucle où nous vérifions d'abord si la condition de sortie est satisfaite ($index >= count($units) - 1). 
 Si tel est le cas, nous utilisons break pour sortir de la boucle. 
 Sinon, nous continuons à diviser $value par 1024 et à incrémenter $index.
 
-On retourne l'arrondi grace à la fn php round() avec l'unité trouvé dans la boucle en concaténation.
+On retourne $value à l'arrondi de $precision grace à la fn php round() avec l'unité trouvé dans la boucle ($index).
 */

@@ -1,25 +1,28 @@
 /* Footer */
 #footer {
-  text-shadow: 0.55rem 0.55rem #FFFFFF;
+  text-shadow: 0.55rem 0.55rem #FFFFFF;
+
+  .form__footer {
+    margin: 1rem;
+    text-shadow: 0.55rem 0.55rem #15FFF5;
+  }
+
+  .cgv__footer,
+  .cgu__footer {
+    margin: 0.5rem;
+    text-shadow: 0.55rem 0.55rem #15FFF5;
+
+    .button {
+      margin: 1rem;
+      padding: 1rem;
+      font-size: 1.5rem;
+    }
+  }
 }
 
-#footer .form__footer {
-  margin: 1rem;
-  text-shadow: 0.55rem 0.55rem #15FFF5;
-}
+/* Explications : 
 
-#footer .cgv__footer {
-  margin: 0.5rem;
-  text-shadow: 0.55rem 0.55rem #15FFF5;
-}
+En SCSS, il est inutile d'ajouter #footer à chaque class. le moteur scss a la capacité d'imbriquer contrairement au CSS.
+Egalement, il est possible de regrouper deux class comme par exemple .cgv__footer et .cgu__footer puisqu'il avait les mêmes instructions.
 
-#footer .cgv__footer .button {
-  margin: 1rem;
-  padding: 1rem;
-  font-size: 1.5rem;
-}
-
-#footer .cgu__footer {
-  margin: 0.5rem;
-  text-shadow: 0.55rem 0.55rem #15FFF5;
-}
+*/
